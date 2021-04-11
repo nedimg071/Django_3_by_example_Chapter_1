@@ -11,9 +11,22 @@ https://docs.djangoproject.com/en/3.1/ref/settings/
 """
 
 from pathlib import Path
+import os
+
+# Added from https://ultimatedjango.com/learn-django/lessons/define-environments/?trim=yes
+from django.core.exceptions import ImproperlyConfigured
 
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
 BASE_DIR = Path(__file__).resolve().parent.parent
+
+# DA bi se koristilo u windows 10 mora se restartovati računar kada se uvodi nova env variable
+def get_env_variable(var_name):
+    """ Get the environment variable or return exception """
+    try:
+        return os.environ[var_name]
+    except KeyError:
+        error_msg = "Set the %s environment variable" % var_name
+        raise ImproperlyConfigured(error_msg)
 
 
 # Quick-start development settings - unsuitable for production
@@ -38,6 +51,7 @@ INSTALLED_APPS = [
     'django.contrib.messages',
     'django.contrib.staticfiles',
     'blog.apps.BlogConfig',
+    'taggit',
 ]
 
 MIDDLEWARE = [
@@ -76,11 +90,17 @@ WSGI_APPLICATION = 'Django_3_by_example_Chapter_1.wsgi.application'
 # https://docs.djangoproject.com/en/3.1/ref/settings/#databases
 
 DATABASES = {
-    'default': {
-        'ENGINE': 'django.db.backends.sqlite3',
-        'NAME': BASE_DIR / 'db.sqlite3',
-    }
-}
+    'default': {'ENGINE': 'django.db.backends.postgresql_psycopg2',
+                'NAME': 'proba_website',
+                'USER': 'postgres',
+                'PASSWORD': get_env_variable('POSTGRESQL_LOCAL_PASSWORD'),
+                'HOST': 'localhost',
+                'PORT': '5432'
+    # 'default': {
+    #         'ENGINE': 'django.db.backends.sqlite3',
+    #         'NAME': os.path.join(BASE_DIR, 'db.sqlite3'),
+                }
+            }
 
 
 # Password validation
@@ -114,6 +134,13 @@ USE_I18N = True
 USE_L10N = True
 
 USE_TZ = True
+
+EMAIL_HOST = 'smtp.gmail.com'
+EMAIL_HOST_USER = 'aktuar.gavranovic@gmail.com' # os.environ.get('AKTUAR_GAVRANOVIC_EMAIL_PASS') # os.environ.get('EMAIL_HOST_1') #   email_host_user_aktuar
+EMAIL_HOST_PASSWORD = get_env_variable('EMAIL_PASS')
+EMAIL_PORT = 587
+EMAIL_USE_TLS = True
+
 
 
 # Static files (CSS, JavaScript, Images)
