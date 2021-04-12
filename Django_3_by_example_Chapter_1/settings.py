@@ -38,7 +38,7 @@ SECRET_KEY = 'v7&^$_#irhy@vns35n(gfh(&3(_d=7fdl+uoi(wa%v$8vb84m#'
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
-ALLOWED_HOSTS = []
+ALLOWED_HOSTS = ['aktuar-gavranovic.com:8000', 'localhost', '127.0.0.1']
 
 SITE_ID = 1
 
@@ -95,7 +95,7 @@ WSGI_APPLICATION = 'Django_3_by_example_Chapter_1.wsgi.application'
 
 DATABASES = {
     'default': {'ENGINE': 'django.db.backends.postgresql_psycopg2',
-                'NAME': 'proba_website',
+                'NAME': 'Chapter_1-3_20210412',
                 'USER': 'postgres',
                 'PASSWORD': get_env_variable('POSTGRESQL_LOCAL_PASSWORD'),
                 'HOST': 'localhost',
